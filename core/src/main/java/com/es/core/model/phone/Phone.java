@@ -1,9 +1,7 @@
 package com.es.core.model.phone;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 public class Phone {
     private Long id;
@@ -27,7 +25,7 @@ public class Phone {
 
     private String os;
 
-    private Set<Color> colors = Collections.EMPTY_SET;
+    private Set<Color> colors = new HashSet<>();
 
     private String displayResolution;
 
@@ -271,5 +269,19 @@ public class Phone {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Phone phone = (Phone) o;
+        return id.equals(phone.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
