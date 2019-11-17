@@ -17,15 +17,15 @@ import java.util.*;
 public class JdbcPhoneDao implements PhoneDao {
     private static final String QUERY_GET_PHONE_BY_KEY =
             "SELECT phones.*, colors.id as colorId, colors.code as colorCode FROM phones " +
-                    "INNER JOIN phone2color ON phone2color.phoneId = phones.id " +
-                    "INNER JOIN colors ON colors.id = phone2color.colorId " +
+                    "LEFT JOIN phone2color ON phone2color.phoneId = phones.id " +
+                    "LEFT JOIN colors ON colors.id = phone2color.colorId " +
                     "WHERE phones.id = ?";
 
     private static final String QUERY_MATCH_PRONE_WITH_COLORS =
             "INSERT INTO phone2color (phoneId, colorId) values (?, ?);";
 
     private static final String QUERY_UPDATE_PHONE =
-            "UPDATE phones SET brand = ?, model = ?, price = ?, displaySizeInches = ?, weightGr = ?, lengthMm = ?, " +
+            "UPDATE phones SET price = ?, displaySizeInches = ?, weightGr = ?, lengthMm = ?, " +
                     "widthMm = ?, heightMm = ?, announced = ?, deviceType = ?, os = ?, displayResolution = ?, " +
                     "pixelDensity = ?, displayTechnology = ?, backCameraMegapixels = ?, frontCameraMegapixels = ?, " +
                     "ramGb = ?, internalStorageGb = ?, batteryCapacityMah = ?, talkTimeHours = ?, standByTimeHours = ?, " +
@@ -55,7 +55,7 @@ public class JdbcPhoneDao implements PhoneDao {
     private SimpleJdbcInsert phoneSimpleJdbcInsert;
 
     public Optional<Phone> get(final Long key) {
-        Objects.requireNonNull(key);
+        Objects.requireNonNull(key, "Key should not be null.");
 
         Phone phone = jdbcTemplate.query(QUERY_GET_PHONE_BY_KEY, new PhoneResultSetExtractor(), key);
 
@@ -63,7 +63,7 @@ public class JdbcPhoneDao implements PhoneDao {
     }
 
     public void save(final Phone phone) {
-        Objects.requireNonNull(phone);
+        Objects.requireNonNull(phone, "Phone to save should not be null.");
 
         if (phone.getId() == null) {
             addPhone(phone);
@@ -75,7 +75,7 @@ public class JdbcPhoneDao implements PhoneDao {
     }
 
     private void updatePhone(final Phone phone) {
-        jdbcTemplate.update(QUERY_UPDATE_PHONE, phone.getBrand(), phone.getModel(), phone.getPrice(), phone.getDisplaySizeInches(),
+        jdbcTemplate.update(QUERY_UPDATE_PHONE, phone.getPrice(), phone.getDisplaySizeInches(),
                 phone.getWeightGr(), phone.getLengthMm(), phone.getWidthMm(), phone.getHeightMm(), phone.getAnnounced(),
                 phone.getDeviceType(), phone.getOs(), phone.getDisplayResolution(), phone.getPixelDensity(), phone.getDisplayTechnology(),
                 phone.getBackCameraMegapixels(), phone.getFrontCameraMegapixels(), phone.getRamGb(), phone.getInternalStorageGb(),
