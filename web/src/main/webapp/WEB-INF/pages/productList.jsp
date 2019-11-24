@@ -25,12 +25,32 @@
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
-                <th>Image</th>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Color</th>
-                <th>Display size</th>
-                <th>Price</th>
+                <th>
+                    Image
+                </th>
+                <th>
+                    Brand
+                    <tags:sort sort="brand" order="asc"/>
+                    <tags:sort sort="brand" order="desc"/>
+                </th>
+                <th>
+                    Model
+                    <tags:sort sort="model" order="asc"/>
+                    <tags:sort sort="model" order="desc"/>
+                </th>
+                <th>
+                    Color
+                </th>
+                <th>
+                    Display size
+                    <tags:sort sort="displaySize" order="asc"/>
+                    <tags:sort sort="displaySize" order="desc"/>
+                </th>
+                <th>
+                    Price
+                    <tags:sort sort="price" order="asc"/>
+                    <tags:sort sort="price" order="desc"/>
+                </th>
                 <th>Quantity</th>
                 <th>Action</th>
             </tr>
@@ -62,14 +82,7 @@
             </c:forEach>
             </tbody>
         </table>
-        <ul class="pagination float-right">
-            <li class="page-item"><a class="page-link" href="#">❮</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">❯</a></li>
-        </ul>
+        <tags:pagination activePage="${not empty param.page ? param.page : 1}"/>
     </div>
 
     </div>

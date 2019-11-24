@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class JdbcPhoneDao implements PhoneDao {
@@ -115,5 +116,35 @@ public class JdbcPhoneDao implements PhoneDao {
                 jdbcTemplate.query(QUERY_GET_COLORS_BY_PHONE_ID, colorBeanPropertyRowMapper, phone.getId()))));
 
         return phones;
+    }
+
+    @Override
+    public List<Phone> findAll(String query, int offset, int limit) {
+        List<Phone> phones = jdbcTemplate.query(createQueryForSearch(query, offset, limit),
+                phoneBeanPropertyRowMapper);
+
+        phones.forEach(phone -> phone.setColors(new HashSet<>(
+                jdbcTemplate.query(QUERY_GET_COLORS_BY_PHONE_ID, colorBeanPropertyRowMapper, phone.getId()))));
+
+        return phones;
+    }
+
+    private String createQueryForSearch(String query, int offset, int limit) {
+        StringBuilder sqlQuery = new StringBuilder(
+                "SELECT phones.* FROM phones " +
+                "INNER JOIN stocks ON phones.id = stocks.phoneId " +
+                "WHERE stock > 0 ");
+
+        if (query != null && !query.trim().isEmpty()) {
+            String[] keywords = query.trim().split(" ");
+            List<String> modelMatches = Arrays.stream(keywords)
+                    .map(keyword -> "brand ILIKE '%" + keyword + "%' OR model ILIKE '%" + keyword + "%'")
+                    .collect(Collectors.toList());
+            sqlQuery.append("AND (").append(String.join(" OR ", modelMatches)).append(") ");
+        }
+
+        sqlQuery.append("OFFSET ").append(offset).append(" LIMIT ").append(limit);
+
+        return sqlQuery.toString();
     }
 }
