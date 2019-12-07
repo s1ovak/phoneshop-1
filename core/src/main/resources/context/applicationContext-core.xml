@@ -28,6 +28,10 @@
         <constructor-arg value="com.es.core.model.phone.Color"/>
     </bean>
 
+    <bean id="stockBeanPropertyRowMapper" class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+        <constructor-arg value="java.lang.Integer"/>
+    </bean>
+
     <bean id="phoneSimpleJdbcInsert" class="org.springframework.jdbc.core.simple.SimpleJdbcInsert">
         <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
         <property name="tableName" value="phones"/>
