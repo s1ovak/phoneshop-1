@@ -79,8 +79,7 @@
                     <td>$ ${phone.price}</td>
                     <td>
                         <input class="form-control" value="1" id="${phone.id}" name="quantity" type="text">
-                        <span id="error${phone.id}" style="display: none; color: red"
-                              class="alert alert-danger"></span>
+                        <span id="error${phone.id}" style="display: none; color: red"></span>
                     </td>
                     <td>
                         <button class="btn btn-outline-primary" name="add2cartButton"

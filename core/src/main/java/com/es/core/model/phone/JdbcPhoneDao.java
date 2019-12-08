@@ -47,7 +47,7 @@ public class JdbcPhoneDao implements PhoneDao {
                     "OFFSET ? LIMIT ?";
 
     private static final String QUERY_GET_STOCK_BY_PHONE_ID =
-            "SELECT stocks.quantity FROM stocks" +
+            "SELECT stocks.stock FROM stocks " +
                     "WHERE phoneId = ?";
 
     @Resource
@@ -60,15 +60,14 @@ public class JdbcPhoneDao implements PhoneDao {
     private BeanPropertyRowMapper<Color> colorBeanPropertyRowMapper;
 
     @Resource
-    private BeanPropertyRowMapper<Integer> stockBeanPropertyRowMapper;
-
-    @Resource
     private SimpleJdbcInsert phoneSimpleJdbcInsert;
 
     @Override
     public Integer getPhoneStock(Long phoneId) {
-       List<Integer> stock =  jdbcTemplate.query(QUERY_GET_STOCK_BY_PHONE_ID, stockBeanPropertyRowMapper, phoneId);
-       return stock.get(0);
+       Integer stock = jdbcTemplate.queryForObject(QUERY_GET_STOCK_BY_PHONE_ID, new Object[]{phoneId}, Integer.class);
+       if(stock != null) {
+           return stock;
+       } else return 0;
     }
 
     public Optional<Phone> get(final Long key) {

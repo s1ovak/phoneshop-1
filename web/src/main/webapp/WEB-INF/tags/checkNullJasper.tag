@@ -4,9 +4,11 @@
 <%@ attribute name="element" required="true" type="java.lang.Object" %>
 <%@ attribute name="text" required="false" type="java.lang.String" %>
 
-<c:if test="${not empty element}">
-    ${element}${text}
-</c:if>
-<c:otherwise>
-    Unknown
-</c:otherwise>
+<c:choose>
+    <c:when test="${not empty element}">
+        ${element}${text}
+    </c:when>
+    <c:otherwise>
+        Unknown
+    </c:otherwise>
+</c:choose>

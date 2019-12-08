@@ -4,6 +4,9 @@
 
 <jsp:useBean id="phone" class="com.es.core.model.phone.Phone" scope="request"/>
 <tags:template>
+    <c:url value="/resources/js/addToCart.js" var="addToCart"/>
+    <script src="${addToCart}"></script>
+
     <div class="container">
         <header class="clearfix">
             <h1 class="float-left">Phonify</h1>
@@ -26,12 +29,14 @@
                 <div class="visible-print-inline-block">
                     <h3>Price: ${phone.price}$</h3>
                     <div>
-                        <input class="form-control left-side" id="${phone.id}" name="quantity"
-                               value="1" style="width: 60px; text-align: right" type="text">
-                        <button class="btn btn-info" style="margin-left: 5px">
+                        <input class="form-control left-side" value="1" id="${phone.id}" name="quantity"
+                               type="text" style="width: 160px; text-align: right">
+                        <button class="btn btn-outline-primary" name="add2cartButton" style="margin-left: 5px"
+                                onclick="addToCart(${phone.id}, '${pageContext.request.contextPath}/ajaxCart')">
                             Add to cart
                         </button>
                     </div>
+                    <span id="error${phone.id}" style="display: none; color: red"></span>
                 </div>
             </div>
 
@@ -41,25 +46,25 @@
                     <tr>
                         <td>Size</td>
                         <td>
-                            <tags:checkNull element="${phone.displaySizeInches}"/>
+                            <tags:checkNullJasper element="${phone.displaySizeInches}"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Resolution</td>
                         <td>
-                            <tags:checkNull element="${phone.displayResolution}"/>
+                            <tags:checkNullJasper element="${phone.displayResolution}"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Technology</td>
                         <td>
-                            <tags:checkNull element="${phone.displayTechnology}"/>
+                            <tags:checkNullJasper element="${phone.displayTechnology}"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Pixel density</td>
                         <td>
-                            <tags:checkNull element="${phone.pixelDensity}"/>
+                            <tags:checkNullJasper element="${phone.pixelDensity}"/>
                         </td>
                     </tr>
                 </table>
@@ -69,13 +74,13 @@
                     <tr>
                         <td>Length</td>
                         <td>
-                            <tags:checkNull element=" ${phone.lengthMm}" text="mm"/>
+                            <tags:checkNullJasper element=" ${phone.lengthMm}" text="mm"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Width</td>
                         <td>
-                            <tags:checkNull element=" ${phone.widthMm}" text="mm"/>
+                            <tags:checkNullJasper element=" ${phone.widthMm}" text="mm"/>
                         </td>
                     </tr>
                     <tr>
@@ -92,7 +97,7 @@
                     <tr>
                         <td>Weight</td>
                         <td>
-                            <tags:checkNull element="${phone.weightGr}"/>
+                            <tags:checkNullJasper element="${phone.weightGr}"/>
                         </td>
                     </tr>
                 </table>
@@ -102,13 +107,13 @@
                     <tr>
                         <td>Front</td>
                         <td>
-                            <tags:checkNull element="${phone.frontCameraMegapixels}" text=" megapixels"/>
+                            <tags:checkNullJasper element="${phone.frontCameraMegapixels}" text=" megapixels"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Back</td>
                         <td>
-                            <tags:checkNull element="${phone.backCameraMegapixels}" text=" megapixels"/>
+                            <tags:checkNullJasper element="${phone.backCameraMegapixels}" text=" megapixels"/>
                         </td>
                     </tr>
                 </table>
@@ -118,19 +123,19 @@
                     <tr>
                         <td>Talk time</td>
                         <td>
-                            <tags:checkNull element="${phone.talkTimeHours}" text=" hours"/>
+                            <tags:checkNullJasper element="${phone.talkTimeHours}" text=" hours"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Stand by time</td>
                         <td>
-                            <tags:checkNull element="${phone.standByTimeHours}" text=" hours"/>
+                            <tags:checkNullJasper element="${phone.standByTimeHours}" text=" hours"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Battery capacity</td>
                         <td>
-                            <tags:checkNull element="${phone.batteryCapacityMah}" text=" mAh"/>
+                            <tags:checkNullJasper element="${phone.batteryCapacityMah}" text=" mAh"/>
                         </td>
                     </tr>
                 </table>
@@ -140,13 +145,13 @@
                     <tr>
                         <td>Device type</td>
                         <td>
-                            <tags:checkNull element="${phone.deviceType}"/>
+                            <tags:checkNullJasper element="${phone.deviceType}"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Bluetooth</td>
                         <td>
-                            <tags:checkNull element="${phone.bluetooth}"/>
+                            <tags:checkNullJasper element="${phone.bluetooth}"/>
                         </td>
                     </tr>
                 </table>
