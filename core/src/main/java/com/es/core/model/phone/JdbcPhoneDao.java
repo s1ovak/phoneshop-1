@@ -1,5 +1,6 @@
 package com.es.core.model.phone;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -64,10 +65,13 @@ public class JdbcPhoneDao implements PhoneDao {
 
     @Override
     public Integer getPhoneStock(Long phoneId) {
-       Integer stock = jdbcTemplate.queryForObject(QUERY_GET_STOCK_BY_PHONE_ID, new Object[]{phoneId}, Integer.class);
-       if(stock != null) {
-           return stock;
-       } else return 0;
+        Integer stock;
+        try {
+            stock = jdbcTemplate.queryForObject(QUERY_GET_STOCK_BY_PHONE_ID, new Object[]{phoneId}, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        }
+        return stock;
     }
 
     public Optional<Phone> get(final Long key) {

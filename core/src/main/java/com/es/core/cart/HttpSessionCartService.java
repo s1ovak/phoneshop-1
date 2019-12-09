@@ -51,4 +51,12 @@ public class HttpSessionCartService implements CartService {
             cart.removeItem(phoneId);
         }
     }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public void setPhoneDao(PhoneDao phoneDao) {
+        this.phoneDao = phoneDao;
+    }
 }
