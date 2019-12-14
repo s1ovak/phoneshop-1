@@ -1,5 +1,6 @@
 package com.es.phoneshop.web.controller.pages;
 
+import com.es.core.cart.CartService;
 import com.es.core.model.phone.PhoneDao;
 import com.es.core.model.phone.PhoneService;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,9 @@ public class ProductListPageController {
     @Resource
     private PhoneService phoneService;
 
+    @Resource
+    private CartService cartService;
+
     @GetMapping
     public String showProductList(@RequestParam(value = "query", required = false) String query,
                                   @RequestParam(value = "sort", required = false) String sort,
@@ -23,6 +27,7 @@ public class ProductListPageController {
                                   @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                   Model model) {
         model.addAttribute("phones", phoneService.findPhones(query, sort, order, page));
+        cartService.insertMiniCart(model);
         return "productList";
     }
 }

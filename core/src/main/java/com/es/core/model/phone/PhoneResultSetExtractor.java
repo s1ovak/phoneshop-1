@@ -13,18 +13,21 @@ public class PhoneResultSetExtractor implements ResultSetExtractor<Phone> {
         Phone phone = new Phone();
 
         while (resultSet.next()) {
-            if(resultSet.isFirst()) {
+            if (resultSet.isFirst()) {
                 phone = setPhoneData(resultSet);
             }
 
-            phone.getColors().add(
-                    new Color(resultSet.getLong("colorId"), resultSet.getString("colorCode")));
+            Long colorId = resultSet.getLong("colorId");
+            if (colorId != 0L) {
+                phone.getColors().add(
+                        new Color(colorId, resultSet.getString("colorCode")));
+            }
         }
 
         return phone;
     }
 
-    private Phone setPhoneData(ResultSet resultSet) throws SQLException{
+    private Phone setPhoneData(ResultSet resultSet) throws SQLException {
         Phone phone = new Phone();
 
         phone.setId(resultSet.getLong("id"));

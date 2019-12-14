@@ -6,12 +6,18 @@ import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PhoneServiceImpl implements PhoneService {
     @Resource
     private PhoneDao phoneDao;
+
+    @Override
+    public Optional<Phone> getPhoneById(Long id) {
+       return phoneDao.get(id);
+    }
 
     @Override
     public List<Phone> findPhones(String query, String sort, String order, Integer page) {

@@ -1,5 +1,6 @@
 package com.es.core.model.phone;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,7 +42,14 @@ public class JdbcPhoneDao implements PhoneDao {
                     "WHERE phone2color.phoneId = ?";
 
     private static final String QUERY_GET_PHONES_WITH_OFFSET_AND_LIMIT =
-            "SELECT * FROM phones OFFSET ? LIMIT ?";
+            "SELECT phones.* FROM phones " +
+                    "INNER JOIN stocks ON phones.id = stocks.phoneId " +
+                    "WHERE stock > 0 AND phones.price IS NOT NULL " +
+                    "OFFSET ? LIMIT ?";
+
+    private static final String QUERY_GET_STOCK_BY_PHONE_ID =
+            "SELECT stocks.stock FROM stocks " +
+                    "WHERE phoneId = ?";
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -54,6 +62,17 @@ public class JdbcPhoneDao implements PhoneDao {
 
     @Resource
     private SimpleJdbcInsert phoneSimpleJdbcInsert;
+
+    @Override
+    public Integer getPhoneStock(Long phoneId) {
+        Integer stock;
+        try {
+            stock = jdbcTemplate.queryForObject(QUERY_GET_STOCK_BY_PHONE_ID, new Object[]{phoneId}, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        }
+        return stock;
+    }
 
     public Optional<Phone> get(final Long key) {
         Objects.requireNonNull(key, "Key should not be null.");
@@ -132,8 +151,8 @@ public class JdbcPhoneDao implements PhoneDao {
     private String createQueryForSearch(String query, int offset, int limit) {
         StringBuilder sqlQuery = new StringBuilder(
                 "SELECT phones.* FROM phones " +
-                "INNER JOIN stocks ON phones.id = stocks.phoneId " +
-                "WHERE stock > 0 ");
+                        "INNER JOIN stocks ON phones.id = stocks.phoneId " +
+                        "WHERE stock > 0 AND phones.price IS NOT NULL ");
 
         if (query != null && !query.trim().isEmpty()) {
             String[] keywords = query.trim().split(" ");

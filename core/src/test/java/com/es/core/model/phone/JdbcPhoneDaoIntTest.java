@@ -44,18 +44,6 @@ public class JdbcPhoneDaoIntTest {
         colors.clear();
     }
 
-    @Test
-    public void testFindAllRightResultSize() {
-        assertEquals(startDbSize + saveNewCounter, phoneDao.findAll(0, 10).size());
-    }
-
-    @Test
-    public void testFindAllRightColorsMatch() {
-        colors.add(new Color(1000L, "Black"));
-
-        assertEquals(colors.toString(), phoneDao.findAll(0, 10).get(0).getColors().toString());
-    }
-
     @Test(expected = NullPointerException.class)
     public void testSaveExceptionIfKeyNull() {
         phoneDao.save(null);
@@ -63,12 +51,13 @@ public class JdbcPhoneDaoIntTest {
 
     @Test
     public void testSaveNewPhone() {
-        int size = phoneDao.findAll(0, 1000).size();
+        int size = phoneDao.findAll(null, 0, 1000).size();
 
         phoneDao.save(phone1);
         saveNewCounter++;
 
-        assertEquals(size + 1, phoneDao.findAll(0, 1000).size());
+        assertEquals(size, phoneDao.findAll(null, 0, 1000).size());
+        assertEquals(phone1.getDescription(), phoneDao.get(1003L).get().getDescription());
     }
 
     @Test
@@ -93,7 +82,7 @@ public class JdbcPhoneDaoIntTest {
 
         phoneDao.save(phone2);
         saveNewCounter++;
-        List<Phone> phones = phoneDao.findAll(0, 10);
+        List<Phone> phones = phoneDao.findAll(null, 0, 10);
         Phone phone = phones.get(phones.size() - 1);
 
         assertEquals(phone2.getColors().size(), phone.getColors().size());
@@ -112,5 +101,19 @@ public class JdbcPhoneDaoIntTest {
     @Test
     public void testGetWithResult() {
         assertTrue(phoneDao.get(1000L).isPresent());
+    }
+
+    @Test
+    public void testGetPhoneStockNull() {
+        int stock = phoneDao.getPhoneStock(1000L);
+
+        assertEquals(0, stock);
+    }
+
+    @Test
+    public void testGetPhoneStockSuccess() {
+        int stock = phoneDao.getPhoneStock(1001L);
+
+        assertEquals(11, stock);
     }
 }

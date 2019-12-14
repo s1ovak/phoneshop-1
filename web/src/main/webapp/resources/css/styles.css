@@ -1,3 +1,13 @@
 .img-size-plp {
     width: 60px;
 }
+
+.left-side {
+    width: 48%;
+    float: left;
+}
+
+.right-side {
+    width: 48%;
+    float: right;
+}
