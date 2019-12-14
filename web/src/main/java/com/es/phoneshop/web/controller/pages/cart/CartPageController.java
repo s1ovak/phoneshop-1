@@ -55,7 +55,7 @@ public class CartPageController {
         }
     }
 
-    @PostMapping(value = "delete/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public String deleteCartItem(@PathVariable(name = "id") Long phoneId) {
         cartService.remove(phoneId);
         return "redirect:/cart";

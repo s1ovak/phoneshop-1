@@ -3,6 +3,7 @@ package com.es.phoneshop.web.controller.pages;
 import com.es.core.cart.CartService;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.PhoneService;
+import com.es.phoneshop.web.controller.pages.exceptions.PhoneNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,11 @@ public class ProductDetailsPageController {
     @GetMapping(value = "/{id}")
     public String getPhone(@PathVariable(name = "id") Long id, Model model) {
         Optional<Phone> phone = phoneService.getPhoneById(id);
-        model.addAttribute("phone", phone.orElse(null));
+        if (phone.isPresent()) {
+            model.addAttribute("phone", phone.get());
+        } else {
+            throw new PhoneNotFoundException("Phone with id " + id + " is not found.");
+        }
         cartService.insertMiniCart(model);
         return "productDetails";
     }

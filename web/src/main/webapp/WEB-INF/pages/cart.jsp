@@ -3,10 +3,14 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <jsp:useBean id="cartItems" class="java.util.ArrayList" scope="request"/>
 <tags:template>
+    <c:url value="/resources/js/deleteCartItem.js" var="deleteCartItem"/>
+    <script src="${deleteCartItem}"></script>
+
     <div class="container">
         <header class="clearfix">
             <h1 class="float-left">Phonify</h1>
@@ -65,22 +69,24 @@
                                     <tags:checkNullJasper element="${cartItem.phone.displaySizeInches}"/>
                                 </td>
                                 <td>
-                                    <tags:checkNullJasper element="${cartItem.phone.price}" text="$"/>
+                                    <tags:checkNullJasper element="${cartItem.phone.price}" isPrice="true"/>
                                 </td>
                                 <td>
                                     <form:input path="items['${cartItem.phone.id}']" class="form-control"
                                                 value="${cartItem.quantity}" type="text"
                                                 cssStyle="width: 160px; text-align: right"/>
                                     <br>
-                                    <c:if test="${containErrors}">
-                                        <form:errors path="items['${cartItem.phone.id}']"
-                                                     cssStyle="color: red"/>
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${containErrors}">
+                                            <form:errors path="items['${cartItem.phone.id}']"
+                                                         cssStyle="color: red"/>
+                                        </c:when>
+                                    </c:choose>
                                 </td>
                                 <td>
                                     <button class="btn btn-danger"
-                                            formaction="${pageContext.request.contextPath}/cart/delete/${cartItem.phone.id}"
-                                            formmethod="post">
+                                            onclick="deleteCartItem(
+                                                    '${pageContext.request.contextPath}/cart/delete/${cartItem.phone.id}')">
                                         Delete
                                     </button>
                                 </td>

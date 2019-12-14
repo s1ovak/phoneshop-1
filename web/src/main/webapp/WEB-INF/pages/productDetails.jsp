@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:useBean id="phone" class="com.es.core.model.phone.Phone" scope="request"/>
 <tags:template>
@@ -27,7 +28,7 @@
                 <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
                 <p>${phone.description}</p>
                 <div class="visible-print-inline-block">
-                    <h3>Price: ${phone.price}$</h3>
+                    <h3>Price:  <fmt:formatNumber type="currency" currencySymbol="$" value="${phone.price}"/></h3>
                     <div>
                         <input class="form-control left-side" value="1" id="${phone.id}" name="quantity"
                                type="text" style="width: 160px; text-align: right">

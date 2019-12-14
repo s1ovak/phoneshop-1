@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <tags:template>
     <c:url value="/resources/js/addToCart.js" var="addToCart"/>
@@ -76,7 +77,9 @@
                         </c:forEach>
                     </td>
                     <td>${phone.displaySizeInches}&#34;</td>
-                    <td>$ ${phone.price}</td>
+                    <td>
+                        <fmt:formatNumber type="currency" currencySymbol="$" value="${phone.price}"/>
+                    </td>
                     <td>
                         <input class="form-control" value="1" id="${phone.id}" name="quantity" type="text">
                         <span id="error${phone.id}" style="display: none; color: red"></span>
