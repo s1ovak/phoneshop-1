@@ -98,7 +98,7 @@
                         <button type="submit" class="btn btn-primary">
                             Update
                         </button>
-                        <a href="#" class="btn btn-primary">
+                        <a href="${pageContext.request.contextPath}/order" class="btn btn-primary">
                             Order
                         </a>
                     </div>

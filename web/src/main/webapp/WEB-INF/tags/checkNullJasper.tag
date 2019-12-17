@@ -13,7 +13,7 @@
                 <fmt:formatNumber type="currency" currencySymbol="$" value="${element}"/>
             </c:when>
             <c:otherwise>
-                ${element}${text}
+                <c:out value="${element}${text}"/>
             </c:otherwise>
         </c:choose>
     </c:when>

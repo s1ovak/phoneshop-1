@@ -6,7 +6,7 @@ public class OrderItem {
     private Long id;
     private Phone phone;
     private Order order;
-    private Long quantity;
+    private Integer quantity;
 
     public Phone getPhone() {
         return phone;
@@ -24,11 +24,11 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Long getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(final Long quantity) {
+    public void setQuantity(final Integer quantity) {
         this.quantity = quantity;
     }
 }
