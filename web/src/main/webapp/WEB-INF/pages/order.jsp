@@ -21,6 +21,54 @@
         <c:choose>
             <c:when test="${not empty order.orderItems}">
                 <tags:orderDataTable order="${order}"/>
+
+                <form:form action="${pageContext.request.contextPath}/order" method="post"
+                           modelAttribute="placeOrderDto">
+
+                    <label>First name* </label>
+                    <form:input path="firstName" class="form-control" type="text" cssStyle="width: 400px;"/>
+                    <c:choose>
+                        <c:when test="${containErrors}">
+                            <form:errors path="firstName"
+                                         cssStyle="color: red"/>
+                        </c:when>
+                    </c:choose>
+                    <br>
+
+                    <label>Last name* </label>
+                    <form:input path="lastName" class="form-control" type="text" cssStyle="width: 400px;"/>
+                    <c:choose>
+                        <c:when test="${containErrors}">
+                            <form:errors path="lastName"
+                                         cssStyle="color: red"/>
+                        </c:when>
+                    </c:choose>
+                    <br>
+
+                    <label>Address* </label>
+                    <form:input path="address" class="form-control" type="text" cssStyle="width: 400px;"/>
+                    <c:choose>
+                        <c:when test="${containErrors}">
+                            <form:errors path="address"
+                                         cssStyle="color: red"/>
+                        </c:when>
+                    </c:choose>
+                    <br>
+
+                    <label>Phone* </label>
+                    <form:input path="phone" class="form-control" type="text" cssStyle="width: 400px;"/>
+                    <c:choose>
+                        <c:when test="${containErrors}">
+                            <form:errors path="phone"
+                                         cssStyle="color: red"/>
+                        </c:when>
+                    </c:choose>
+                    <br>
+
+                    <button type="submit" class="btn btn-primary">
+                        Order
+                    </button>
+                </form:form>
             </c:when>
             <c:otherwise>
                 <h3>

@@ -6,11 +6,12 @@ import com.es.core.order.OrderService;
 import com.es.core.order.OutOfStockException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/order")
@@ -22,13 +23,27 @@ public class OrderPageController {
     private CartService cartService;
 
     @GetMapping
-    public void getOrder(Model model) {
+    public String getOrder(Model model) {
         Order newOrder = orderService.createOrder(cartService.getCart());
-        model.addAttribute("order",  newOrder);
+        model.addAttribute("order", newOrder);
+        if (!model.containsAttribute("placeOrderDto")) {
+            model.addAttribute("placeOrderDto", new PlaceOrderDto());
+        }
+
+        return "order";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void placeOrder() throws OutOfStockException {
-        orderService.placeOrder(null);
+    @PostMapping
+    public String placeOrder(@Valid @ModelAttribute PlaceOrderDto placeOrderDto,
+                             BindingResult bindingResult,
+                             Model model) {
+        boolean containErrors = bindingResult.hasErrors();
+        model.addAttribute("containErrors", containErrors);
+
+        if (containErrors) {
+            return "order";
+        } else {
+            return "redirect:/orderOverview";
+        }
     }
 }
