@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -80,5 +81,10 @@ public class OrderServiceImpl implements OrderService {
 
             order.getOrderItems().add(orderItem);
         });
+    }
+
+    @Override
+    public Optional<Order> getOrder(Long orderId) {
+        return orderDao.getOrder(orderId);
     }
 }

@@ -78,6 +78,6 @@ create table order_items
 (
     orderId  BIGINT  not null,
     phoneId  BIGINT  not null,
-    id       BIGINT AUTO_INCREMENT primary key,
+    id       BIGINT auto_increment primary key,
     quantity INTEGER not null
 );

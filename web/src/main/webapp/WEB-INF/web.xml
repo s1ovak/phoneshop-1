@@ -23,7 +23,11 @@
     <exception-type>com.es.phoneshop.web.controller.pages.exceptions.PhoneNotFoundException</exception-type>
     <location>/WEB-INF/pages/404.jsp</location>
   </error-page>
-  
+
+  <error-page>
+    <exception-type>com.es.phoneshop.web.controller.pages.exceptions.OrderNotFoundException</exception-type>
+    <location>/WEB-INF/pages/404.jsp</location>
+  </error-page>
   
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>

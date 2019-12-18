@@ -2,16 +2,24 @@ package com.es.core.model.order;
 
 import com.es.core.cart.Cart;
 import com.es.core.model.phone.PhoneDao;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class JdbcOrderDao implements OrderDao {
+
+    private final static String FIND_ORDER_BY_ID = "SELECT * FROM orders WHERE id = ?";
+
+    private final static String FIND_ORDER_ITEMS_BY_ORDER_ID =
+            "SELECT * from orderItems where orderId = ?";
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -63,5 +71,20 @@ public class JdbcOrderDao implements OrderDao {
 
         simpleJdbcInsert.execute(params);
         phoneDao.decreasePhoneStock(orderItem.getPhone().getId(), orderItem.getQuantity());
+    }
+
+    @Override
+    public Optional<Order> getOrder(Long orderId) {
+        try {
+            Order order = jdbcTemplate.queryForObject(FIND_ORDER_BY_ID, new OrderRowMapper(), orderId);
+            order.setOrderItems(getOrderItems(orderId));
+            return Optional.of(order);
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    private List<OrderItem> getOrderItems(Long orderId) {
+        return jdbcTemplate.query(FIND_ORDER_ITEMS_BY_ORDER_ID, new OrderItemRowMapper(phoneDao), orderId);
     }
 }
