@@ -9,4 +9,5 @@ public interface PhoneDao {
     void save(Phone phone);
     List<Phone> findAll(int offset, int limit);
     List<Phone> findAll(String query, int offset, int limit);
+    void decreasePhoneStock(Long phoneId, Integer quantity);
 }

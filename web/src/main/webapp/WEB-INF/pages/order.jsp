@@ -4,6 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <jsp:useBean id="order" class="com.es.core.model.order.Order" scope="request"/>
 <tags:template>
@@ -63,6 +64,10 @@
                                          cssStyle="color: red"/>
                         </c:when>
                     </c:choose>
+                    <br>
+
+                    <label>Additional information</label>
+                    <form:textarea path="info" class="form-control" type="text"  cssStyle="width: 400px; height: 150px"/>
                     <br>
 
                     <button type="submit" class="btn btn-primary">
