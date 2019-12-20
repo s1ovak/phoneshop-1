@@ -19,7 +19,7 @@ public class JdbcOrderDao implements OrderDao {
     private final static String FIND_ORDER_BY_ID = "SELECT * FROM orders WHERE id = ?";
 
     private final static String FIND_ORDER_ITEMS_BY_ORDER_ID =
-            "SELECT * from orderItems where orderId = ?";
+            "SELECT * from order_items where orderId = ?";
 
     @Resource
     private JdbcTemplate jdbcTemplate;
