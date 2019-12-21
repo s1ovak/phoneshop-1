@@ -51,6 +51,10 @@ public class JdbcPhoneDao implements PhoneDao {
             "SELECT stocks.stock FROM stocks " +
                     "WHERE phoneId = ?";
 
+    private static final String DECREASE_PHONE_STOCK_BY_ID =
+            "UPDATE stocks SET stock = ((SELECT stock FROM stocks WHERE phoneId = ?) - ?)" +
+                    " WHERE phoneId = ?";
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -165,5 +169,14 @@ public class JdbcPhoneDao implements PhoneDao {
         sqlQuery.append("OFFSET ").append(offset).append(" LIMIT ").append(limit);
 
         return sqlQuery.toString();
+    }
+
+    @Override
+    public void decreasePhoneStock(Long phoneId, Integer quantity) {
+        if(getPhoneStock(phoneId) > quantity) {
+            jdbcTemplate.update(DECREASE_PHONE_STOCK_BY_ID, phoneId, quantity, phoneId);
+        } else {
+            throw new OutOfStockException("Phone with id = " + phoneId + " is put of stock.");
+        }
     }
 }
