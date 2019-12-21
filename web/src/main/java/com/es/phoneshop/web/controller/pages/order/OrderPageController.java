@@ -3,6 +3,7 @@ package com.es.phoneshop.web.controller.pages.order;
 import com.es.core.cart.CartService;
 import com.es.core.model.order.Order;
 import com.es.core.model.order.OrderService;
+import com.es.core.model.phone.OutOfStockException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,7 +48,14 @@ public class OrderPageController {
 
             if (invalidItemsPhoneIds.isEmpty()) {
                 setInfoIntoOrder(order, placeOrderDto);
-                return "redirect:/orderOverview/" + orderService.placeOrder(order);
+                long orderId;
+                try {
+                    orderId = orderService.placeOrder(order);
+                    return "redirect:/orderOverview/" + orderId;
+                } catch (OutOfStockException e) {
+                    model.addAttribute("containQuantitiesErrors", true);
+                    return getOrder(model);
+                }
             } else {
                 invalidItemsPhoneIds.forEach(item -> {
                     cartService.remove(item);

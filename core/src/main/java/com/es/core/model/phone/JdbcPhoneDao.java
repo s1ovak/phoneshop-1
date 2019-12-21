@@ -173,6 +173,10 @@ public class JdbcPhoneDao implements PhoneDao {
 
     @Override
     public void decreasePhoneStock(Long phoneId, Integer quantity) {
-        jdbcTemplate.update(DECREASE_PHONE_STOCK_BY_ID, phoneId, quantity, phoneId);
+        if(getPhoneStock(phoneId) > quantity) {
+            jdbcTemplate.update(DECREASE_PHONE_STOCK_BY_ID, phoneId, quantity, phoneId);
+        } else {
+            throw new OutOfStockException("Phone with id = " + phoneId + " is put of stock.");
+        }
     }
 }

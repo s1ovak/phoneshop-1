@@ -26,6 +26,9 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderDao orderDao;
 
+    @Resource
+    private Cart cart;
+
     @Override
     public Order createOrder(Cart cart) {
         Order order = new Order();
@@ -67,7 +70,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Long placeOrder(Order order) {
-        return orderDao.saveOrder(order);
+        long id = orderDao.saveOrder(order);
+        cart.clearCart();
+        return id;
     }
 
 

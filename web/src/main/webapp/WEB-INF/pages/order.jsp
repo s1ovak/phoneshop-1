@@ -21,6 +21,11 @@
 
         <c:choose>
             <c:when test="${not empty order.orderItems}">
+                <c:choose>
+                    <c:when test="${containErrors}">
+                        <span style="color: red">Error with stocks of products.</span>
+                    </c:when>
+                </c:choose>
                 <tags:orderDataTable order="${order}"/>
 
                 <form:form action="${pageContext.request.contextPath}/order" method="post"

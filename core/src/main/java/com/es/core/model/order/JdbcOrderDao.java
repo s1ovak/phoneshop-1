@@ -27,8 +27,7 @@ public class JdbcOrderDao implements OrderDao {
     @Resource
     private PhoneDao phoneDao;
 
-    @Resource
-    private Cart cart;
+
 
     @Override
     public Long saveOrder(Order order) {
@@ -52,9 +51,9 @@ public class JdbcOrderDao implements OrderDao {
 
         order.getOrderItems().forEach(orderItem -> {
             saveOrderItem(orderId, orderItem);
+            phoneDao.decreasePhoneStock(orderItem.getPhone().getId(), orderItem.getQuantity());
         });
 
-        cart.clearCart();
         return orderId;
     }
 
@@ -70,7 +69,6 @@ public class JdbcOrderDao implements OrderDao {
         params.put("quantity", orderItem.getQuantity());
 
         simpleJdbcInsert.execute(params);
-        phoneDao.decreasePhoneStock(orderItem.getPhone().getId(), orderItem.getQuantity());
     }
 
     @Override
