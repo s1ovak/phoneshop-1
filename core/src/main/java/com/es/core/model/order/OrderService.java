@@ -12,4 +12,6 @@ public interface OrderService {
     List<Long> findInvalidCartItems(Order order);
     Order updateOrder(Order order, Cart cart);
     Optional<Order> getOrder(Long orderId);
+    List<Order> getOrders();
+    void setStatus(Long id, OrderStatus status);
 }

@@ -1,6 +1,5 @@
 package com.es.core.model.order;
 
-import com.es.core.cart.Cart;
 import com.es.core.model.phone.PhoneDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,12 +20,17 @@ public class JdbcOrderDao implements OrderDao {
     private final static String FIND_ORDER_ITEMS_BY_ORDER_ID =
             "SELECT * from order_items where orderId = ?";
 
+    private final static String GET_ALL_ORDERS_WITHOUT_ORDER_ITEMS = "SELECT * FROM orders";
+
+    private final static String SET_STATUS =
+            "UPDATE orders SET orderStatus = ? " +
+            "WHERE id = ?";
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
     @Resource
     private PhoneDao phoneDao;
-
 
 
     @Override
@@ -59,8 +63,7 @@ public class JdbcOrderDao implements OrderDao {
 
     private void saveOrderItem(Long orderId, OrderItem orderItem) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("order_items")
-                .usingGeneratedKeyColumns("id");
+                .withTableName("order_items");
 
         Map<String, Object> params = new HashMap<>();
 
@@ -84,5 +87,15 @@ public class JdbcOrderDao implements OrderDao {
 
     private List<OrderItem> getOrderItems(Long orderId) {
         return jdbcTemplate.query(FIND_ORDER_ITEMS_BY_ORDER_ID, new OrderItemRowMapper(phoneDao), orderId);
+    }
+
+    @Override
+    public List<Order> getAll() {
+        return jdbcTemplate.query(GET_ALL_ORDERS_WITHOUT_ORDER_ITEMS, new OrderRowMapper());
+    }
+
+    @Override
+    public void setStatus(Long id, OrderStatus status) {
+        jdbcTemplate.update(SET_STATUS, status.toString(), id);
     }
 }
