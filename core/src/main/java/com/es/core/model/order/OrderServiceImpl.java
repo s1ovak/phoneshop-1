@@ -92,4 +92,17 @@ public class OrderServiceImpl implements OrderService {
     public Optional<Order> getOrder(Long orderId) {
         return orderDao.getOrder(orderId);
     }
+
+    @Override
+    public List<Order> getOrders() {
+        List<Order> orders = orderDao.getAll();
+        if(orders != null) {
+            return orders;
+        } else return new ArrayList<>();
+    }
+
+    @Override
+    public void setStatus(Long id, OrderStatus status) {
+        orderDao.setStatus(id, status);
+    }
 }

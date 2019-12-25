@@ -22,7 +22,7 @@
         <c:choose>
             <c:when test="${not empty order.orderItems}">
                 <c:choose>
-                    <c:when test="${containErrors}">
+                    <c:when test="${containQuantitiesErrors}">
                         <span style="color: red">Error with stocks of products.</span>
                     </c:when>
                 </c:choose>
