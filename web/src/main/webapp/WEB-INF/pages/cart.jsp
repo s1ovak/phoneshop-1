@@ -15,7 +15,7 @@
         <header class="clearfix">
             <h1 class="float-left">Phonify</h1>
             <div class="float-right">
-                <a href="#">Login</a>
+                <tags:loginHeader/>
                 <jsp:include page="../fragments/minicart.jsp"/>
             </div>
         </header>

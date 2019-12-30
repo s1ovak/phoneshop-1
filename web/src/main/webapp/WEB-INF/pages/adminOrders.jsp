@@ -11,8 +11,7 @@
         <header class="clearfix">
             <h1 class="float-left">Phonify</h1>
             <div class="float-right">
-                <label>admin</label>
-                <a href="#">Logout</a>
+                <tags:loginHeader/>
             </div>
         </header>
         <hr>
