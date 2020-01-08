@@ -2,10 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <tags:template>
     <c:url value="/resources/js/addToCart.js" var="addToCart"/>
     <script src="${addToCart}"></script>
+
+    <c:url value="/resources/js/addToCompareList.js" var="addToCompareList"/>
+    <script src="${addToCompareList}"></script>
 
     <div class="container">
         <header class="clearfix">
@@ -57,6 +61,7 @@
                 </th>
                 <th>Quantity</th>
                 <th>Action</th>
+                <th>Compare</th>
             </tr>
             </thead>
             <tbody>
@@ -90,10 +95,19 @@
                             Add to cart
                         </button>
                     </td>
+                    <td>
+                        <input type="checkbox"
+                               onclick="addToCompareList(${phone.id}, '${pageContext.request.contextPath}/ajaxCompare')">
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
+        <div>
+            <a href="${pageContext.request.contextPath}/compare" class="btn btn-primary" style="float: right">
+                Compare
+            </a>
+        </div>
         <tags:pagination activePage="${not empty param.page ? param.page : 1}"/>
     </div>
 </tags:template>

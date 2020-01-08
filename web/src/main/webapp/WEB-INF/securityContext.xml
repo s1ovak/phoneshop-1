@@ -10,6 +10,8 @@
     <http pattern="/resources/**" security="none"/>
     <http auto-config="true">
         <csrf disabled="true"/>
+        <intercept-url pattern="/compare" access="permitAll"/>
+        <intercept-url pattern="/ajaxCompare" access="permitAll"/>
         <intercept-url pattern="/cart" access="permitAll"/>
         <intercept-url pattern="/errorPage" access="permitAll"/>
         <intercept-url pattern="/order**" access="permitAll"/>
